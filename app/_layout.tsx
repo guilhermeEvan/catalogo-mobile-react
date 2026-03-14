@@ -1,7 +1,9 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { store } from "@/src/store/store";
+import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
+import { Provider } from "react-redux";
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
@@ -13,12 +15,15 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider value={DefaultTheme}>
+        <Stack screenOptions={{headerShown: false}}>
+          <Stack.Screen name="index" />
+          <Stack.Screen name="home" />
+        </Stack>
+        <StatusBar style="auto" />
+      </ThemeProvider>
+    </Provider>
+  
   );
 }
